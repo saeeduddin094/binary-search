@@ -1,0 +1,49 @@
+#include <vector>
+
+bool isPossible(vector<int>& arr, int n, int m, long long mid) {
+    long long currentDaySum = 0;
+    int day = 1;
+
+    for (int i = 0; i < m; i++) {
+        if (currentDaySum + arr[i] <= mid) {
+            currentDaySum += arr[i];
+        } else {
+            day++;
+            if (day > n || arr[i] > mid) {
+                return false;
+            }
+            currentDaySum = arr[i];
+        }
+
+        if (day > n) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+long long ayushGivesNinjatest(int n, int m, vector<int> time)  {
+    long long start = 0;
+    long long sum = 0;
+    long long ans;
+
+    for (int i = 0; i < m; i++) {
+        sum += time[i];
+    }
+
+    long long end = sum;
+    
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+
+        if (isPossible(time, n, m, mid)) {
+            end = mid - 1;
+            ans = mid;
+        } else {
+            start = mid + 1;
+        }
+    }
+
+    return ans;
+}
